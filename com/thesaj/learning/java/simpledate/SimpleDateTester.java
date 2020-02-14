@@ -17,7 +17,7 @@ package com.thesaj.learning.java.simpledate;
 
 public class SimpleDateTester{
 	
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = false;
 	
 	
     public static void main(String args[]){
@@ -25,9 +25,9 @@ public class SimpleDateTester{
         //Initialize list with SimpleDate data
         SimpleDate dates [] = populateDates();
         
-    	//retrieveDateOutput(dates);
+    	retrieveDateOutput(dates);
     	
-    	//retrieveString(dates);
+    	retrieveString(dates);
     	
     	retrieveJSON(dates);
     	
@@ -39,19 +39,18 @@ public class SimpleDateTester{
     	 
     	SimpleDate dateList [] = {
     			    new SimpleDate(2, 3, 2008),   //DayOfYear:34   DaysLeft:332
-//    			    new SimpleDate(2, 3, 2011),   //DayOfYear:34   DaysLeft:331
-//    			    new SimpleDate(3, 2, 2008),   //DayOfYear:62   DaysLeft:304
-//    			    new SimpleDate(9, 2, 2011),   //DayOfYear:61   DaysLeft:304
-//    			    new SimpleDate(12, 30, 2008), //DayOfYear:365  DaysLeft:1
-//    			    new Holiday(12, 30, 2011), //DayOfYear:364  DaysLeft:1
-//    			    new Holiday(7, 4, 2020,"4th of July"), //DayOfYear:364  DaysLeft:1
-//    			    new Appointment(7, 4, 2020), //DayOfYear:364  DaysLeft:1
-//    			    new Appointment(2, 13, 2020,"UMBC Training Center","Jason,Tania,Joe"),
-//    			    new Appointment(2, 14, 2020,"UMBC Training Center","Jason,Tania,Joe"),
-//    			    new Holiday(2, 17, 2020,"President's Day"), //DayOfYear:364  DaysLeft:1
-    			    //new Appointment(2, 24, 2020,"System Source","Jason,Tania,Krupali"), //DayOfYear:364  DaysLeft:1
-    			    new SimpleDate(13, 30, 2008), //Bad Date:1
-    			    
+    			    new SimpleDate(2, 3, 2011),   //DayOfYear:34   DaysLeft:331
+    			    new SimpleDate(3, 2, 2008),   //DayOfYear:62   DaysLeft:304
+    			    new SimpleDate(9, 2, 2011),   //DayOfYear:61   DaysLeft:304
+    			    new SimpleDate(12, 30, 2008), //DayOfYear:365  DaysLeft:1
+    			    new Holiday(12, 25, 2011), //Holiday: Christmas - UNDEFINED
+    			    new Holiday(7, 4, 2020,"4th of July"), //Holiday: Independence Day
+    			    new Appointment(7, 4, 2020), //Appointment: Undefined
+    			    new Appointment(2, 13, 2020,"UMBC Training Center","Jason,Tania,Joe"),//Appointment: SimpleDate+Details
+    			    new Appointment(2, 14, 2020,"UMBC Training Center","Jason,Tania,Joe"),//Appointment: SimpleDate+Details
+    			    new Holiday(2, 17, 2020,"President's Day"), //Holiday: President's Day
+    			    new Appointment(2, 24, 2020,"System Source","Jason,Tania,Krupali"), ////Appointment: SimpleDate+Details
+    			    new SimpleDate(13, 30, 2008), //Error Handling: Bad Date    			    
     	        };
     	 
     	return dateList;
@@ -107,23 +106,24 @@ public class SimpleDateTester{
         		}
             }
             finally{
-            	System.out.println("\"SimpleDate\" output complete!");
-    	        outputString.append(System.getProperty("line.separator"));
+            	
             }
         }
-
+    	
     	outputString.append("|"+String.format("%97s","EOF|").replace(" ", "_") + System.getProperty("line.separator"));
-    	System.out.println(outputString.toString());
+    	outputString.append("**** \"SimpleDate\" output complete! " + String.format("%-63s","").replace(" ", "*"));
+    	System.out.println(outputString.toString()+"\n\n");
+    	
     }
     
     private static void retrieveString(SimpleDate[] dates){
     	
     	StringBuilder outputString = new StringBuilder();
-    	
+    	outputString.append("**** Outputs the toString methods. " + String.format("%-63s","").replace(" ", "*")+ System.getProperty("line.separator"));
+        
     	try{
 	    	
-    		outputString.append("**** Outputs the toString methods. " + String.format("%-63s","").replace(" ", "*"));
-	        for(int i = 0; i < dates.length; i++){
+    		for(int i = 0; i < dates.length; i++){
 	        	outputString.append(dates[i].toString() + System.getProperty("line.separator"));
 	        }
 	        
@@ -136,17 +136,18 @@ public class SimpleDateTester{
     		}
     	}
     	finally{
-    		outputString.append("**** Output toString data complete. " + String.format("%-74s","").replace(" ", "*"));
-	        outputString.append(System.getProperty("line.separator"));
-	        System.out.println(outputString);
+    		
     	}
+    	outputString.append("**** Output toString data complete. " + String.format("%-63s","").replace(" ", "*"));
+        outputString.append(System.getProperty("line.separator")+System.getProperty("line.separator"));
+        System.out.println(outputString);
     	
     }
     
     private static void retrieveJSON(SimpleDate[] dates){
     	
     	StringBuilder outputString = new StringBuilder();
-    	outputString.append("**** Outputs JSON data. " + String.format("%-74s","").replace(" ", "*"));
+    	outputString.append("**** Outputs JSON data. " + String.format("%-74s","").replace(" ", "*")+System.getProperty("line.separator"));
     	
     	try{
     		
@@ -156,17 +157,26 @@ public class SimpleDateTester{
             
     	}
     	catch(Exception e){
-    		System.out.println("ERROR (toJSON): Please review input - .");
+    		System.out.print("ERROR (toJSON): Please review input");
+    		String[] tmpStr = e.getMessage().split(" ");
+    		
+    		try{				
+				System.out.print(", " + dates[Integer.parseInt(tmpStr[1])].getDate() + ".");
+			}
+			catch(Exception e2){} 
+    		finally{}
+    		
     		if(DEBUG == true){
-    			System.out.println(e.getMessage());
-    		}
+    			System.out.println(e);
+       		}
     	}
     	finally{
-    		outputString.append("**** Output of JSON data complete. " + String.format("%-74s","").replace(" ", "*"));
-	        outputString.append(System.getProperty("line.separator"));
-	        System.out.println(outputString);
+    		System.out.println("");
     	}
     	
+    	outputString.append("**** Output of JSON data complete. " + String.format("%-74s","").replace(" ", "*"));
+        outputString.append(System.getProperty("line.separator"));
+        System.out.println(outputString);
     }
     
     private static String padString(String txt2pad, int length) {
