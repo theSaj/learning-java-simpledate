@@ -22,21 +22,26 @@ public class SimpleDateTester{
 	
     public static void main(String args[]){
     	
+    	//Declare class is run, and use String.format() to pad comment and String.replace() to replace spaces with astericks.
+    	System.out.println("**** RUN SimpleDateTester " + String.format("%-72s","").replace(" ", "*")+"\n\n");
+    	
         //Initialize list with SimpleDate data
         SimpleDate dates [] = populateDates();
         
+        //Retrieve SimpleDate data and display for terminal. 
     	retrieveDateOutput(dates);
     	
+    	//Retrieve SimpleDate data with standard Class.toString() output.
     	retrieveString(dates);
     	
+    	//Retrieve SimpleDate data using custom coded method Class.toJSON() and present output as JSON objects.
     	retrieveJSON(dates);
-    	
-
     	
     }
     
     private static SimpleDate[] populateDates(){
-    	 
+    	
+    	//Creates an array of SimpleDate objects, including Holidays and Appointments - which extend SimpleDate.
     	SimpleDate dateList [] = {
     			    new SimpleDate(2, 3, 2008),   //DayOfYear:34   DaysLeft:332
     			    new SimpleDate(2, 3, 2011),   //DayOfYear:34   DaysLeft:331
@@ -49,7 +54,7 @@ public class SimpleDateTester{
     			    new Appointment(2, 13, 2020,"UMBC Training Center","Jason,Tania,Joe"),//Appointment: SimpleDate+Details
     			    new Appointment(2, 14, 2020,"UMBC Training Center","Jason,Tania,Joe"),//Appointment: SimpleDate+Details
     			    new Holiday(2, 17, 2020,"President's Day"), //Holiday: President's Day
-    			    new Appointment(2, 24, 2020,"System Source","Jason,Tania,Krupali"), ////Appointment: SimpleDate+Details
+    			    new Appointment(2, 24, 2020,"System Source","Jason,Tania,Krupali"), //Appointment: SimpleDate+Details
     			    new SimpleDate(13, 30, 2008), //Error Handling: Bad Date    			    
     	        };
     	 
@@ -58,9 +63,10 @@ public class SimpleDateTester{
     
     private static void retrieveDateOutput(SimpleDate[] dates){
     	
+    	//Construct a StringBuilder to collate output content.
     	StringBuilder outputString = new StringBuilder();
     	
-        outputString.append(System.getProperty("line.separator"));
+    	//Populate StringBuilder via StringBuilder.append() method.
         outputString.append("**** Output formatted date data. " + String.format("%-65s","").replace(" ", "*"));
         outputString.append(System.getProperty("line.separator"));
         outputString.append("|"+String.format("%97s","|").replace(" ", "-"));
@@ -70,25 +76,44 @@ public class SimpleDateTester{
         outputString.append("|"+String.format("%97s","|").replace(" ", "-"));
         outputString.append(System.getProperty("line.separator"));
         
+        //For array dates of SimpleDate[], iterate. 
     	for(int i = 0; i < dates.length; i++){
+    		
         	try{
-	        	
+        		//NOTE: padString is custom private method to simply String.format calls.
         		outputString.append("| " + padString(String.format("%10s",dates[i].getDate()),11));
 	        	outputString.append(padString("| " + dates[i].getMonthAsString(),12));
 	        	outputString.append(padString("| " + dates[i].getDayOfYear(),7));
 	        	outputString.append(padString("| " + dates[i].getDaysLeftInYear(),12) + "|");
+	        	
 	        	String tmpStr = "";
+	        	
+	        	//Output if year isLeapYear.
 	        	if(dates[i].isLeapYear()== true){
 	        		tmpStr = "Leap Year";
 	            }
+	        	
+	        	/*Handle Class Holiday by inquiring of array "dates" of SimpleDate[], and asking if object at
+	        	 *  array index has a class name of "Holiday", if so, cast the SimpleDate object to a Holiday object
+	        	 *  in order to access extended class methods.
+	        	 */
 	        	if(dates[i].getClass().getName().equals("mywork.collections.ex2.Holiday")){
+	        		
 	        		Holiday holiday = Holiday.class.cast(dates[i]);
-	            	if(tmpStr.length() > 0){
+	            	
+	        		//IF data exists in SPECIAL column (namely, "Leap Year"), insert a comma before appending string.
+	        		if(tmpStr.length() > 0){
 	            		tmpStr = tmpStr + ", ";
 	            	}
 	            	tmpStr = tmpStr + holiday.getHoliday();
 	        	}
+	        	
 	        	outputString.append(String.format("%-51s",tmpStr) + " |" + System.getProperty("line.separator"));
+	        	
+	        	/*Handle Class Appointment by inquiring of array "dates" of SimpleDate[], and asking if object at
+	        	 *  array index has a class name of "Holiday", if so, cast the SimpleDate object to a Appointment object
+	        	 *  in order to access extended class methods.
+	        	 */
 	        	if(dates[i].getClass().getName().equals("mywork.collections.ex2.Appointment")){
 	        		Appointment appointment = Appointment.class.cast(dates[i]);
 	            	tmpStr = "|"+String.format("%-7s","") + "^^^^ | Has appointment @Location:" + appointment.getLocation() + ", w/attendees: " + appointment.getAttendees();
@@ -98,20 +123,24 @@ public class SimpleDateTester{
 	        	}
 	        	
         	}
-            catch(Exception e){            	
+            catch(Exception e){
+            	//Handle Exception error with notification. 
             	outputString.append(" >> ERROR OCCURRED <<");
             	outputString.append(System.getProperty("line.separator"));
+            	
+            	//IF DEBUG boolean is on, show detailed error message.
             	if(DEBUG == true){
         			System.out.println(e);
         		}
             }
             finally{
-            	
             }
         }
     	
     	outputString.append("|"+String.format("%97s","EOF|").replace(" ", "_") + System.getProperty("line.separator"));
     	outputString.append("**** \"SimpleDate\" output complete! " + String.format("%-63s","").replace(" ", "*"));
+    	
+    	//Write StringBuilder output to console. 
     	System.out.println(outputString.toString()+"\n\n");
     	
     }
@@ -124,9 +153,9 @@ public class SimpleDateTester{
     	try{
 	    	
     		for(int i = 0; i < dates.length; i++){
+    			//Utilizes the commonly incorporated Class.toString() method.
 	        	outputString.append(dates[i].toString() + System.getProperty("line.separator"));
 	        }
-	        
 	        
     	}
     	catch(Exception e){
@@ -158,10 +187,14 @@ public class SimpleDateTester{
     	}
     	catch(Exception e){
     		System.out.print("ERROR (toJSON): Please review input");
+    		
+    		/*Convert the error message to an array of words via split in order to later attempt 
+    		 * extraction of the Index provided in the Exception error message.   		 */
     		String[] tmpStr = e.getMessage().split(" ");
     		
+    		//Attempt to retrieve the SimpleDate.date() value of the object that caused an error.
     		try{				
-				System.out.print(", " + dates[Integer.parseInt(tmpStr[1])].getDate() + ".");
+    			System.out.print(", " + dates[Integer.parseInt(tmpStr[1])].getDate() + ".");
 			}
 			catch(Exception e2){} 
     		finally{}
@@ -179,6 +212,7 @@ public class SimpleDateTester{
         System.out.println(outputString);
     }
     
+    //Method to simplify padding. Intend to extend to take an optional Left(L)/Right(R) parameter.
     private static String padString(String txt2pad, int length) {
 		return String.format("%-" + length + "s", txt2pad);
 	}

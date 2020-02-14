@@ -15,18 +15,18 @@ package com.thesaj.learning.java.simpledate;
 */
 //**************************************************************************************
 
+//Class to extend Class.SimpleDate with the addition of a "location" and "attendees" labels. 
 public class Appointment extends SimpleDate {
 
+	//Variables to hold the new location and attendees labels.
 	private String location;
 	private String attendees;
 	
+	//Constant defaults when no labels are provided.
 	private static final String LOCATION_DEFAULT = "UNDEFINED";
 	private static final String ATTENDEES_DEFAULT = "UNDEFINED";
-	/**
-	 * @param m
-	 * @param d
-	 * @param y
-	 */
+
+	//Update of SimpleDate constructors to add the location and attendees labels.
 	public Appointment(int m, int d, int y, String l, String a) {
 		//super(m, d, y);
 		month = m;
@@ -42,43 +42,31 @@ public class Appointment extends SimpleDate {
 		attendees = ATTENDEES_DEFAULT;
 	}
 
-	/**
-	 * @param m
-	 * @param d
-	 */
 	public Appointment(int m, int d) {
 		super(m, d);
 		location = LOCATION_DEFAULT;
 		attendees = ATTENDEES_DEFAULT;
 	}
 
-	/**
-	 * @param d
-	 */
 	public Appointment(int d) {
 		super(d);
 		location = LOCATION_DEFAULT;
 		attendees = ATTENDEES_DEFAULT;
 	}
 
-	/**
-	 * 
-	 */
 	public Appointment() {
 		super();
 		location = LOCATION_DEFAULT;
 		attendees = ATTENDEES_DEFAULT;
 	}
 
-	/**
-	 * @param date
-	 */
 	public Appointment(String date) {
 		super(date);
 		location = LOCATION_DEFAULT;
 		attendees = ATTENDEES_DEFAULT;
 	}
 	
+	//Update methods to include location and attendees labels.
     public String getLocation()  { return location;  }
     
     public String getAttendees()  { return attendees;  }
@@ -108,9 +96,9 @@ public class Appointment extends SimpleDate {
         	jsonStr.append("\"daysLeftInYear\": " + daysLeftInYear(month,day,year) + ",");jsonStr.append(System.getProperty("line.separator"));
         jsonStr.append("\t");
         	jsonStr.append("\"leapYear\": " + isLeapYear(year) + ",");jsonStr.append(System.getProperty("line.separator"));
+        //Class.toJSON() modified to contain a sub-object for appointments. "appointment": {"location": "UNDEFINED", "attendees": "UNDEFINED"}
         jsonStr.append("\t");
         	jsonStr.append("\"appointment\": {");jsonStr.append(System.getProperty("line.separator"));
-                
         	jsonStr.append("\t");jsonStr.append("\t");
         	jsonStr.append("\"location\": \"" + getLocation() + "\",");jsonStr.append(System.getProperty("line.separator"));
         	jsonStr.append("\t");jsonStr.append("\t");

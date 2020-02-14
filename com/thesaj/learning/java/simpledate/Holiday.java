@@ -15,15 +15,16 @@ package com.thesaj.learning.java.simpledate;
 */
 //**************************************************************************************
 
+//Class to extend Class.SimpleDate with the addition of a "Holiday" label. 
 public class Holiday extends SimpleDate {
 
-	String holiday;
+	//Variable to hold the new holiday label.
+	private String holiday;
+	
+	//Constant for default when no label is provided.
 	private static final String HOLIDAY_DEFAULT = "Holiday";
-	/**
-	 * @param m
-	 * @param d
-	 * @param y
-	 */
+
+	//Update of SimpleDate constructors to add the holiday label.
 	public Holiday(int m, int d, int y, String h) {
 		//super(m, d, y);
 		month = m;
@@ -37,39 +38,27 @@ public class Holiday extends SimpleDate {
 		holiday = HOLIDAY_DEFAULT;
 	}
 
-	/**
-	 * @param m
-	 * @param d
-	 */
 	public Holiday(int m, int d) {
 		super(m, d);
 		holiday = HOLIDAY_DEFAULT;
 	}
 
-	/**
-	 * @param d
-	 */
 	public Holiday(int d) {
 		super(d);
 		holiday = HOLIDAY_DEFAULT;
 	}
 
-	/**
-	 * 
-	 */
 	public Holiday() {
 		super();
 		holiday = HOLIDAY_DEFAULT;
 	}
 
-	/**
-	 * @param date
-	 */
 	public Holiday(String date) {
 		super(date);
 		holiday = HOLIDAY_DEFAULT;
 	}
 	
+	//Update methods to include holiday label.
     public String getHoliday()  { return holiday;  }
     
     public String toString() {

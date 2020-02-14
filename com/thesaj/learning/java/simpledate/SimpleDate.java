@@ -18,7 +18,6 @@ import java.util.StringTokenizer;
 
 public class SimpleDate {
 
-	
 	int month, day, year;
 	
 	private static int months[] = {31,28,31,30,31,30,31,31,30,31,30,31};
@@ -27,12 +26,15 @@ public class SimpleDate {
 	private boolean isLeapYear;
 
     // BEGIN: Constructors *********************************************************
-    public SimpleDate(int m, int d, int y) {
+    
+	//Standard constructor
+	public SimpleDate(int m, int d, int y) {
         month = m;
         day = d;
         year = y;
     }
 
+	//Alternate constructor, no "year". 
     public SimpleDate(int m, int d) {
         month = m;
         day = d;
@@ -43,6 +45,7 @@ public class SimpleDate {
         year = now.getYear() + 1900;
     }
 
+    //Alternate constructor, no "month" or "year". 
     public SimpleDate(int d) {
         day = d;
 
@@ -54,6 +57,7 @@ public class SimpleDate {
         month = now.getMonth() + 1;
     }
 
+    //Alternate constructor, no parameters. 
     public SimpleDate() {
         // need to utilize Sun's Date class to obtain
         // current year but we will store it as a 4 digit year
@@ -66,6 +70,7 @@ public class SimpleDate {
         day = now.getDate();
     }
 
+    //Alternate constructor, single parameter sent in "m/d/yyyy" date format. 
     public SimpleDate(String date) {
         StringTokenizer st = new StringTokenizer(date, "/");
         month = Integer.parseInt(st.nextToken());
@@ -82,6 +87,7 @@ public class SimpleDate {
     public int getMonth() { return month; }
     public int getYear()  { return year;  }
     
+    //Public methods to invoke private methods and values.
     public String getMonthAsString()  { return monthAsString(month);}
     public int getDayOfYear(){return dayOfYear(month,day,year);}
     public int getDaysLeftInYear(){return daysLeftInYear(month,day,year);}
@@ -89,17 +95,19 @@ public class SimpleDate {
 
     public String getDate()  { return date(month,day,year);}
     public String getDateLong()  { return getMonthAsString() + " " + day + ", " + year;}
-	
     
     public void setDay(int d)   { day = d; }
     public void setMonth(int m) { month = m; }
     public void setYear(int y)  { year = y; }
 
+    //Define standard Class.toString() method.
     public String toString() {
         return  month + "/" + day + "/" + year;
     }
     
+    //Method to provide the results as a JSON object. 
     public String toJSON() {
+    	
         StringBuilder jsonStr = new StringBuilder();
         jsonStr.append("{");jsonStr.append(System.getProperty("line.separator"));
         jsonStr.append("\t");
@@ -125,18 +133,15 @@ public class SimpleDate {
     	return  jsonStr.toString();
     }
     
-    protected String date(int month, int day, int year){
-    	
-    	return Integer.toString(month) + "/" + Integer.toString(day) + "/" + Integer.toString(year);
-    	
+    protected String date(int month, int day, int year){    	
+    	return Integer.toString(month) + "/" + Integer.toString(day) + "/" + Integer.toString(year);    	
     }
     
-    protected String monthAsString(int month){
-    	
-    	return monthsByName[month-1];
-    	
+    protected String monthAsString(int month){    	
+    	return monthsByName[month-1];    	
     }
     
+    //Simple calculation for determining if value is a leap year. 
     protected boolean isLeapYear(int year){
     	boolean isLeapYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     	return isLeapYear;
@@ -172,6 +177,4 @@ public class SimpleDate {
     	return daysLeftInYear;
     }
     
-
-	
 }
